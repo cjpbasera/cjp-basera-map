@@ -1,7 +1,7 @@
 /* global L Papa */
 
 let pointsURL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwSJivUX4DG3akMaW8JxBe6ZcdNptSYTetansOenBFHgDW_kQrLDYpwThiIpPw43xf_EIPUhzIXz55/pub?output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwSJivUX4DG3akMaW8JxBe6ZcdNptSYTetansOenBFHgDW_kQrLDYpwThiIpPw43xf_EIPUhzIXz55/pub?gid=925963632&single=true&output=csv";
 
 window.addEventListener("DOMContentLoaded", init);
 
