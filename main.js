@@ -10,7 +10,6 @@ let sidebar;
 let panelID = "my-info-panel";
 
 function init() {
-  // Centered on India
   map = L.map("map").setView([22.5, 80.0], 5);
 
   L.tileLayer(
@@ -57,40 +56,44 @@ function addPoints(data) {
   for (let row = 0; row < data.length; row++) {
     let d = data[row];
 
+    // Map exact Google Form header names
+    let name       = d["Basera name"] || "Basera";
+    let locality   = d["Locality / Mohalla"] || "—";
+    let citystate  = d["City & State"] || "—";
+    let instagram  = d["Instagram handle"] || "";
+    let members    = d["Number of members so far"] || "—";
+    let lat        = parseFloat(d["lat"]);
+    let lng        = parseFloat(d["lng"]);
+
     // Skip rows with no coordinates
-    if (!d.lat || !d.lng || isNaN(parseFloat(d.lat))) continue;
+    if (!lat || !lng || isNaN(lat)) continue;
 
     let icon = L.AwesomeMarkers.icon({
-      icon: "bug",           // cockroach-closest Font Awesome icon
+      icon: "bug",
       iconColor: "white",
-      markerColor: "red",    // CJP red
+      markerColor: "red",
       prefix: "fa",
     });
 
-    let marker = L.marker([parseFloat(d.lat), parseFloat(d.lng)], {
-      icon: icon,
-    });
-
+    let marker = L.marker([lat, lng], { icon: icon });
     marker.addTo(pointGroupLayer);
 
-    // Sidebar content on click
     marker.on("click", function (e) {
       L.DomEvent.stopPropagation(e);
 
       document.getElementById("sidebar-title").innerHTML =
-        "🪳 " + (d.name || "Basera");
+        "🪳 " + name;
 
       document.getElementById("sidebar-content").innerHTML = `
-        <table style="width:100%; border-collapse:collapse; font-family:sans-serif; font-size:14px;">
-          <tr><td><b>Locality</b></td><td>${d.locality || "—"}</td></tr>
-          <tr><td><b>City</b></td><td>${d.city || "—"}</td></tr>
-          <tr><td><b>State</b></td><td>${d.state || "—"}</td></tr>
+        <table style="width:100%; border-collapse:collapse; font-family:sans-serif; font-size:14px; line-height:2;">
+          <tr><td><b>Locality</b></td><td>${locality}</td></tr>
+          <tr><td><b>City / State</b></td><td>${citystate}</td></tr>
           <tr><td><b>Instagram</b></td><td>${
-            d.instagram
-              ? `<a href="https://instagram.com/${d.instagram.replace("@", "")}" target="_blank">${d.instagram}</a>`
+            instagram
+              ? `<a href="https://instagram.com/${instagram.replace("@", "")}" target="_blank">${instagram}</a>`
               : "—"
           }</td></tr>
-          <tr><td><b>Members</b></td><td>${d.members || "—"}</td></tr>
+          <tr><td><b>Members</b></td><td>${members}</td></tr>
         </table>
       `;
 
